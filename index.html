@@ -3,92 +3,409 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Support Live Chat</title>
-  <meta name="description" content="Live chat support demo" />
+  <title>PayPal Support (Mock)</title>
+  <meta name="description" content="Mock PayPal-style support with live chat" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #111827;
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --accent: #22c55e;
+      --bg: #0a0f1b;
+      --surface: #0e1424;
+      --card: #111a2f;
+      --text: #e6e8eb;
+      --muted: #a1a6ad;
+      --brand: #0070ba;  /* PayPal blue tone */
+      --accent: #00a7e6; /* Light cyan accent */
+      --danger: #ef4444;
+      --success: #22c55e;
+      --border: #1f2a40;
     }
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box }
     body {
       margin: 0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background: radial-gradient(1200px 800px at 10% 10%, #0b122a 0%, #0f172a 35%, #0b122a 100%);
       color: var(--text);
+      background: radial-gradient(1200px 800px at 10% 10%, #0a0f1b 0%, #0e1424 40%, #0a0f1b 100%);
       min-height: 100vh;
       display: grid;
-      place-items: center;
+      grid-template-rows: auto 1fr;
     }
-    .container {
-      width: 100%;
-      max-width: 720px;
-      background: linear-gradient(180deg, #0f172a 0%, #0c1328 100%);
-      border: 1px solid #1f2937;
-      border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; background: var(--surface); border-bottom: 1px solid var(--border);
     }
-    .header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
-    .logo {
-      width: 36px; height: 36px; border-radius: 8px; background: #0ea5e9;
-      display: grid; place-items: center; font-weight: 700; color: #0f172a;
+    .pp-logo {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-weight: 700; color: var(--text);
     }
-    h1 { font-size: 24px; margin: 0; }
-    p { margin: 10px 0; line-height: 1.6; color: var(--muted); }
+    .pp-mark {
+      width: 32px; height: 32px; border-radius: 8px; background: var(--brand);
+      display: grid; place-items: center; color: white; font-weight: 800;
+    }
+    main {
+      display: grid; place-items: center; padding: 24px;
+    }
+    .shell {
+      width: 100%; max-width: 960px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+    }
+    .tabs { display: flex; gap: 2px; background: var(--card); padding: 6px; }
+    .tab {
+      padding: 10px 12px; border-radius: 10px; color: var(--muted);
+      cursor: pointer;
+    }
+    .tab.active { background: var(--surface); color: var(--text); border: 1px solid var(--border) }
+    .content { display: grid; grid-template-columns: 280px 1fr; min-height: 520px }
+    .sidebar {
+      border-right: 1px solid var(--border); padding: 16px; background: var(--card);
+    }
+    .panel { padding: 16px; }
     .card {
-      margin-top: 20px; padding: 16px; border: 1px solid #1f2937;
-      border-radius: 12px; background: #111827;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px; margin-bottom: 12px;
     }
-    .btn {
-      display: inline-block; margin-top: 16px;
-      background: var(--accent); color: #0f172a;
-      text-decoration: none; padding: 10px 14px;
-      border-radius: 8px; font-weight: 600;
+    h1 { font-size: 22px; margin: 0 0 8px }
+    h2 { font-size: 16px; margin: 0 0 6px }
+    p { margin: 8px 0; color: var(--muted) }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px;
+      border-radius: 8px; border: 1px solid var(--border); background: var(--brand);
+      color: white; font-weight: 600; cursor: pointer; text-decoration: none;
     }
-    .footer { margin-top: 24px; font-size: 13px; color: var(--muted); }
-    .stack { display: grid; gap: 8px; }
-    code { background: #0b122a; padding: 2px 6px; border-radius: 6px; }
+    .btn.secondary { background: #0f172a; color: var(--text) }
+    .btn.danger { background: var(--danger) }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+    input, select, textarea {
+      width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border);
+      background: #0b1224; color: var(--text);
+    }
+    .row { display: flex; align-items: center; justify-content: space-between }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; margin-left: 6px }
+    .online { background: var(--success) }
+    .offline { background: var(--danger) }
+    .hint { font-size: 12px; color: var(--muted) }
+    .list { list-style: none; padding-left: 0; margin: 8px 0 }
+    .list li { padding: 8px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; background: #0b1322; cursor: pointer }
+    .msg-center { height: 280px; overflow: auto; border: 1px solid var(--border); border-radius: 10px; padding: 10px; background: #0b1322 }
+    .bubble { max-width: 70%; padding: 10px; border-radius: 10px; margin: 6px 0; }
+    .bubble.me { background: #16305a; margin-left: auto }
+    .bubble.bot { background: #1b2336; }
+    .footer-note { font-size: 12px; color: var(--muted); margin-top: 10px }
+    .sr-only { position: absolute; left: -9999px }
   </style>
 </head>
 <body>
-  <main class="container" role="main" aria-label="Live chat support">
-    <div class="header">
-      <div class="logo" aria-hidden="true">S</div>
-      <div class="stack">
-        <h1>Support Center</h1>
-        <p>We’re online and ready to help. Use the chat bubble in the corner to start a conversation.</p>
-      </div>
+  <header>
+    <div class="pp-logo">
+      <div class="pp-mark">PP</div>
+      <div>Support</div>
     </div>
+    <div class="row">
+      <div id="operatorStatusText">Operator: Offline</div>
+      <div class="status-dot offline" id="operatorDot" aria-label="Operator offline"></div>
+      <button class="btn secondary" id="toggleOperator" style="margin-left:10px">Go Online</button>
+    </div>
+  </header>
 
-    <section class="card" aria-label="Getting started">
-      <h2 style="margin:0 0 8px 0; font-size:18px;">Getting started</h2>
-      <p>Click the chat icon to message us. If no one is available, leave your email and we’ll follow up.</p>
-      <a class="btn" href="#quick-help">Quick help</a>
-    </section>
+  <main>
+    <div class="shell" id="app">
 
-    <section id="quick-help" class="card" aria-label="Quick help">
-      <h2 style="margin:0 0 8px 0; font-size:18px;">Quick help topics</h2>
-      <ul style="margin:8px 0 0 18px;">
-        <li>Account access</li>
-        <li>Billing and receipts</li>
-        <li>Security and verification</li>
-      </ul>
-      <p style="margin-top:10px;">Prefer email? Contact <code>support@yourdomain.com</code>.</p>
-    </section>
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="help">Help center</div>
+        <div class="tab" data-tab="messages">Message center</div>
+        <div class="tab" data-tab="chat">Live chat</div>
+        <div class="tab" data-tab="account">Account</div>
+      </div>
 
-    <div class="footer">
-      © 2025 Your Project. Live chat powered by Tidio.
+      <div class="content">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <div class="card">
+            <h2>Quick topics</h2>
+            <ul class="list" id="topics">
+              <li data-topic="login">Login and security</li>
+              <li data-topic="payments">Payments and refunds</li>
+              <li data-topic="disputes">Disputes and chargebacks</li>
+              <li data-topic="limits">Account limits and holds</li>
+            </ul>
+            <p class="hint">Select a topic to load relevant help.</p>
+          </div>
+          <div class="card">
+            <h2>Contact options</h2>
+            <p>Start a chat, open a message, or request a callback (mock).</p>
+            <a class="btn" href="#chat" data-tab-link="chat">Open live chat</a>
+          </div>
+        </aside>
+
+        <!-- Panels -->
+        <section class="panel" id="panel-help" aria-label="Help center">
+          <h1>Help center</h1>
+          <div class="grid-2">
+            <div class="card" id="helpCard">
+              <h2 id="helpTitle">Welcome</h2>
+              <p id="helpBody">Choose a topic on the left to see steps and tips.</p>
+              <div id="helpSteps"></div>
+            </div>
+            <div class="card">
+              <h2>Security reminder</h2>
+              <p>Never share passwords or 2FA codes. If you don’t recognize activity, open your browser and go to paypal.com to check your account.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-messages" aria-label="Message center" hidden>
+          <h1>Message center</h1>
+          <div class="card">
+            <div class="row">
+              <div><strong>New case</strong></div>
+              <div class="hint">Cases are stored locally for demo</div>
+            </div>
+            <div class="grid-2">
+              <input id="caseSubject" placeholder="Subject (e.g., Refund not received)" />
+              <select id="caseType">
+                <option value="general">General</option>
+                <option value="payment">Payment</option>
+                <option value="dispute">Dispute</option>
+                <option value="security">Security</option>
+              </select>
+            </div>
+            <textarea id="caseBody" rows="4" placeholder="Describe the issue..."></textarea>
+            <button class="btn" id="openCase">Open case</button>
+            <p class="hint" id="caseStatus"></p>
+          </div>
+          <div class="card">
+            <h2>Cases</h2>
+            <ul class="list" id="caseList"></ul>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-chat" aria-label="Live chat" hidden>
+          <h1>Live chat</h1>
+          <div class="card">
+            <div class="row">
+              <div>Status: <span id="chatStatusText">Offline</span></div>
+              <div class="status-dot offline" id="chatDot"></div>
+            </div>
+            <div class="msg-center" id="msgCenter" aria-live="polite" aria-relevant="additions">
+              <div class="bubble bot">Hello! I’m PayPal virtual assistant (mock). Ask me about login, payments, disputes, or limits.</div>
+            </div>
+            <div class="grid-2" style="margin-top:10px">
+              <input id="chatInput" placeholder="Type your message…" />
+              <button class="btn" id="sendBtn">Send</button>
+            </div>
+            <p class="footer-note">For sensitive issues, sign in at paypal.com and use the Message Center.</p>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-account" aria-label="Account" hidden>
+          <h1>Account</h1>
+          <div class="card">
+            <h2>Sign in (mock)</h2>
+            <div class="grid-2">
+              <input id="email" type="email" placeholder="Email" autocomplete="username" />
+              <input id="role" placeholder="Role (Buyer or Seller)" />
+            </div>
+            <button class="btn" id="loginBtn">Sign in</button>
+            <p class="hint">This login is a demo. No data leaves your browser.</p>
+          </div>
+          <div class="card">
+            <h2>Session</h2>
+            <p id="sessionInfo">Not signed in.</p>
+            <button class="btn danger" id="logoutBtn">Sign out</button>
+          </div>
+        </section>
+      </div>
     </div>
   </main>
 
-  <!-- Tidio live chat script -->
-  <script src="//code.tidio.co/7txjt9hdnwy8hazdmi889jfeeaynoiyb.js" async></script>
+  <!-- Replace this with your real Tidio embed script to show the live widget -->
+  <!-- Example: <script src="//code.tidio.co/YOUR_KEY.js" async></script> -->
+  <script>
+    // Tab navigation
+    const tabs = document.querySelectorAll('.tab');
+    const panels = {
+      help: document.getElementById('panel-help'),
+      messages: document.getElementById('panel-messages'),
+      chat: document.getElementById('panel-chat'),
+      account: document.getElementById('panel-account'),
+    };
+    const setTab = (name) => {
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+      Object.entries(panels).forEach(([key, el]) => el.hidden = key !== name);
+      if (name === 'chat') document.getElementById('chatInput').focus();
+    };
+    tabs.forEach(t => t.addEventListener('click', () => setTab(t.dataset.tab)));
+    document.querySelectorAll('[data-tab-link]').forEach(a => a.addEventListener('click', (e) => {
+      e.preventDefault(); setTab(a.dataset.tabLink);
+    }));
+
+    // Help topics content
+    const helpData = {
+      login: {
+        title: 'Login and security',
+        body: 'If you can’t sign in, reset your password and check 2FA.',
+        steps: [
+          'Go to paypal.com and select “Having trouble logging in?”.',
+          'Enter your email, verify via SMS or authenticator.',
+          'Review recent activity and remove unknown devices.'
+        ]
+      },
+      payments: {
+        title: 'Payments and refunds',
+        body: 'Track payments, issue refunds, and view receipts.',
+        steps: [
+          'Open Activity → select a transaction to view details.',
+          'For refunds, choose “Issue a refund” within the transaction.',
+          'Refunds can take up to 5 business days to appear.'
+        ]
+      },
+      disputes: {
+        title: 'Disputes and chargebacks',
+        body: 'Resolve problems through the Resolution Center.',
+        steps: [
+          'Go to Resolution Center and open a case.',
+          'Provide evidence (shipping, communication).',
+          'Respond to updates before the deadline.'
+        ]
+      },
+      limits: {
+        title: 'Account limits and holds',
+        body: 'Documents may be required to lift limits.',
+        steps: [
+          'Check notifications for “Provide documents”.',
+          'Upload ID/address and business info as requested.',
+          'Holds release automatically when criteria are met.'
+        ]
+      }
+    };
+    const helpTitle = document.getElementById('helpTitle');
+    const helpBody = document.getElementById('helpBody');
+    const helpSteps = document.getElementById('helpSteps');
+    document.getElementById('topics').addEventListener('click', (e) => {
+      const key = e.target.dataset.topic;
+      if (!key) return;
+      const d = helpData[key];
+      helpTitle.textContent = d.title;
+      helpBody.textContent = d.body;
+      helpSteps.innerHTML = '<ol>' + d.steps.map(s => `<li>${s}</li>`).join('') + '</ol>';
+      setTab('help');
+    });
+
+    // Message center (local storage)
+    const caseList = document.getElementById('caseList');
+    const cases = JSON.parse(localStorage.getItem('cases') || '[]');
+    const renderCases = () => {
+      caseList.innerHTML = cases.map(c =>
+        `<li><strong>#${c.id}</strong> — ${c.subject} <span class="hint">(${c.type})</span></li>`
+      ).join('') || '<li>No cases yet.</li>';
+    };
+    renderCases();
+    document.getElementById('openCase').addEventListener('click', () => {
+      const subject = document.getElementById('caseSubject').value.trim();
+      const type = document.getElementById('caseType').value;
+      const body = document.getElementById('caseBody').value.trim();
+      if (!subject || !body) {
+        document.getElementById('caseStatus').textContent = 'Subject and description are required.';
+        return;
+      }
+      const id = Math.floor(Math.random() * 900000) + 100000;
+      cases.push({ id, subject, type, body, created: Date.now() });
+      localStorage.setItem('cases', JSON.stringify(cases));
+      document.getElementById('caseStatus').textContent = `Case #${id} opened.`;
+      document.getElementById('caseSubject').value = '';
+      document.getElementById('caseBody').value = '';
+      renderCases();
+      setTab('messages');
+    });
+
+    // Account login (mock)
+    const session = JSON.parse(localStorage.getItem('session') || 'null');
+    const sessionInfo = document.getElementById('sessionInfo');
+    const setSessionInfo = (s) => {
+      sessionInfo.textContent = s ? `Signed in as ${s.email} (${s.role})` : 'Not signed in.';
+    };
+    setSessionInfo(session);
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const email = document.getElementById('email').value.trim();
+      const role = (document.getElementById('role').value.trim() || 'Buyer');
+      if (!email) return alert('Enter an email');
+      const s = { email, role };
+      localStorage.setItem('session', JSON.stringify(s));
+      setSessionInfo(s);
+      alert('Signed in (mock). For real support, sign in at paypal.com.');
+    });
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('session');
+      setSessionInfo(null);
+      alert('Signed out.');
+    });
+
+    // Operator online/offline toggle (affects chat panel)
+    const operatorText = document.getElementById('operatorStatusText');
+    const operatorDot = document.getElementById('operatorDot');
+    const toggleBtn = document.getElementById('toggleOperator');
+    const chatDot = document.getElementById('chatDot');
+    const chatStatusText = document.getElementById('chatStatusText');
+    let online = false;
+    const setOnline = (state) => {
+      online = state;
+      operatorText.textContent = `Operator: ${online ? 'Online' : 'Offline'}`;
+      operatorDot.className = 'status-dot ' + (online ? 'online' : 'offline');
+      chatDot.className = operatorDot.className;
+      chatStatusText.textContent = online ? 'Online' : 'Offline';
+      toggleBtn.textContent = online ? 'Go Offline' : 'Go Online';
+    };
+    toggleBtn.addEventListener('click', () => setOnline(!online));
+    setOnline(false);
+
+    // Simple chatbot logic
+    const msgCenter = document.getElementById('msgCenter');
+    const input = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    const reply = (text) => {
+      const b = document.createElement('div');
+      b.className = 'bubble bot';
+      b.textContent = text;
+      msgCenter.appendChild(b);
+      msgCenter.scrollTop = msgCenter.scrollHeight;
+    };
+    const send = (text) => {
+      const m = document.createElement('div');
+      m.className = 'bubble me';
+      m.textContent = text;
+      msgCenter.appendChild(m);
+      msgCenter.scrollTop = msgCenter.scrollHeight;
+    };
+
+    const routes = [
+      { k: /login|sign ?in|password|2fa/i, r: 'Reset your password on paypal.com via “Having trouble logging in?”. Check 2FA devices.' },
+      { k: /refund|money back|charge/i, r: 'Find the transaction in Activity and choose “Issue a refund”. Refunds may take up to 5 business days.' },
+      { k: /dispute|case|chargeback/i, r: 'Open a case in Resolution Center. Provide evidence and respond before deadlines.' },
+      { k: /hold|limit|verify|document/i, r: 'Upload requested documents under Notifications to lift limits and release holds.' },
+      { k: /agent|human|support/i, r: 'I can connect you when online. If offline, leave a message in the Message Center.' },
+    ];
+
+    sendBtn.addEventListener('click', () => {
+      const text = input.value.trim();
+      if (!text) return;
+      send(text);
+      input.value = '';
+      if (!online) {
+        reply('An agent is currently offline. Please leave a case in Message Center or try again later.');
+        return;
+      }
+      const route = routes.find(r => r.k.test(text));
+      reply(route ? route.r : 'Thanks! I’ll route this to an agent. Please provide details or open a case for tracking.');
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendBtn.click();
+    });
+  </script>
+
+  <!-- Tidio live chat script: paste your real key below to show the floating bubble site-wide -->
+  <!-- Example: <script src="//code.tidio.co/7txjt9hdnwy8hazdmi889jfeeaynoiyb.js" async></script> -->
 </body>
 </html>
