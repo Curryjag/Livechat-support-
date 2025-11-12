@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Support Live Chat</title>
+  <meta name="description" content="Live chat support demo" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f172a;      /* slate-900 */
+      --card: #111827;    /* slate-800 */
+      --text: #e5e7eb;    /* slate-200 */
+      --muted: #9ca3af;   /* slate-400 */
+      --accent: #22c55e;  /* green-500 */
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 10% 10%, #0b122a 0%, #0f172a 35%, #0b122a 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 720px;
+      background: linear-gradient(180deg, #0f172a 0%, #0c1328 100%);
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
+    }
+    .logo {
+      width: 36px; height: 36px; border-radius: 8px; background: #0ea5e9; display: grid; place-items: center; font-weight: 700;
+      color: #0f172a;
+    }
+    h1 { font-size: 24px; margin: 0; }
+    p { margin: 10px 0; line-height: 1.6; color: var(--muted); }
+    .card {
+      margin-top: 20px; padding: 16px; border: 1px solid #1f2937; border-radius: 12px; background: #111827;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 16px;
+      background: var(--accent);
+      color: #0f172a;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+    .footer {
+      margin-top: 24px; font-size: 13px; color: var(--muted);
+    }
+    .stack { display: grid; gap: 8px; }
+    code { background: #0b122a; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <main class="container" role="main" aria-label="Live chat support">
+    <div class="header">
+      <div class="logo" aria-hidden="true">S</div>
+      <div class="stack">
+        <h1>Support Center</h1>
+        <p>We’re online and ready to help. Use the chat bubble in the corner to start a conversation.</p>
+      </div>
+    </div>
+
+    <section class="card" aria-label="Getting started">
+      <h2 style="margin:0 0 8px 0; font-size:18px;">Getting started</h2>
+      <p>Click the chat icon to message us. If no one is available, leave your email and we’ll follow up.</p>
+      <a class="btn" href="#quick-help">Quick help</a>
+    </section>
+
+    <section id="quick-help" class="card" aria-label="Quick help">
+      <h2 style="margin:0 0 8px 0; font-size:18px;">Quick help topics</h2>
+      <ul style="margin:8px 0 0 18px;">
+        <li>Account access</li>
+        <li>Billing and receipts</li>
+        <li>Security and verification</li>
+      </ul>
+      <p style="margin-top:10px;">Prefer email? Contact <code>support@yourdomain.com</code>.</p>
+    </section>
+
+    <div class="footer">
+      © 2025 Your Project. Live chat powered by Tidio.
+    </div>
+  </main>
+
+  <!-- Tidio script: Replace this placeholder with your real Tidio embed snippet -->
+  <!-- Example structure Tidio provides (DO NOT use this placeholder in production): -->
+  <!--
+  <script src="//code.tidio.co/your_tidio_public_key.js" async></script>
+  -->
+</body>
+</html>
