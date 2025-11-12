@@ -15,7 +15,7 @@
     header {
       background: linear-gradient(90deg, #0070ba, #1546a0);
       color: white;
-      padding: 16px;
+      padding: 18px;
       text-align: center;
       font-weight: 600;
       letter-spacing: 0.5px;
@@ -25,7 +25,7 @@
       margin: 40px auto;
       padding: 28px;
       background: white;
-      border-radius: 16px;
+      border-radius: 18px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
     }
     h1 {
@@ -38,28 +38,50 @@
       color: #444;
       margin-bottom: 12px;
     }
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      transition: border 0.3s ease;
+    }
+    select:focus {
+      border-color: #0070ba;
+      outline: none;
+    }
+    .topic-info {
+      margin-top: 15px;
+      padding: 16px;
+      background: #eef4fb;
+      border-radius: 12px;
+      font-size: 14px;
+      color: #333;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    }
     .chat-box {
-      margin-top: 24px;
-      padding: 20px;
+      margin-top: 28px;
+      padding: 22px;
       border: 1px solid #e0e0e0;
-      border-radius: 14px;
+      border-radius: 16px;
       background-color: #f9fbfd;
     }
     .chat-status {
       display: inline-block;
-      padding: 4px 10px;
+      padding: 6px 12px;
       border-radius: 20px;
       background: #22c55e;
       color: white;
       font-size: 13px;
       font-weight: 600;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
     .chat-button {
       display: inline-block;
       background-color: #0070ba;
       color: white;
-      padding: 12px 20px;
+      padding: 12px 22px;
       border-radius: 30px;
       text-decoration: none;
       font-weight: 600;
@@ -91,8 +113,22 @@
   <div class="container">
     <h1>Welcome to PayPal Support</h1>
     <p>If you have questions about your account, payments, disputes, or security, we're here to help.</p>
-    <p>Use the live chat below to speak with a support assistant. If we're offline, leave your email and we'll follow up.</p>
+    <p>Select a topic below to see quick guidance, or start a live chat with an assistant.</p>
 
+    <!-- Help Topics Dropdown -->
+    <select id="helpTopics">
+      <option value="">-- Select a help topic --</option>
+      <option value="login">Login & Security</option>
+      <option value="payments">Payments & Refunds</option>
+      <option value="disputes">Disputes & Chargebacks</option>
+      <option value="limits">Account Limits & Holds</option>
+    </select>
+
+    <div class="topic-info" id="topicInfo">
+      Please select a topic to see guidance.
+    </div>
+
+    <!-- Live Chat Section -->
     <div class="chat-box">
       <div class="chat-status">Online</div>
       <a class="chat-button" href="#">Start Live Chat</a>
@@ -100,11 +136,28 @@
   </div>
 
   <footer>
-    © 2025 PayPal Support (Mock). For real help, visit 
+    © 2025 PayPal Support. For help, visit 
     <a href="https://www.paypal.com" target="_blank">paypal.com</a>
   </footer>
 
   <!-- Tidio live chat script -->
   <script src="//code.tidio.co/7txjt9hdnwy8hazdmi889jfeeaynoiyb.js" async></script>
+
+  <script>
+    const helpTopics = document.getElementById('helpTopics');
+    const topicInfo = document.getElementById('topicInfo');
+
+    const guidance = {
+      login: "If you can't log in, reset your password at paypal.com and check your 2FA devices.",
+      payments: "Track payments in Activity. Refunds can be issued directly from the transaction details.",
+      disputes: "Open a case in the Resolution Center. Provide evidence and respond before deadlines.",
+      limits: "Upload requested documents under Notifications to lift limits and release holds."
+    };
+
+    helpTopics.addEventListener('change', () => {
+      const val = helpTopics.value;
+      topicInfo.textContent = val ? guidance[val] : "Please select a topic to see guidance.";
+    });
+  </script>
 </body>
 </html>
