@@ -66,6 +66,7 @@
       border: 1px solid #e0e0e0;
       border-radius: 16px;
       background-color: #f9fbfd;
+      text-align: center;
     }
     .chat-status {
       display: inline-block;
@@ -87,7 +88,8 @@
       font-weight: 600;
       transition: background 0.3s ease;
     }
-    .chat-button:hover {
+    .chat-button:hover,
+    .chat-button:focus {
       background-color: #005c99;
     }
     footer {
@@ -116,7 +118,7 @@
     <p>Select a topic below to see quick guidance, or start a live chat with an assistant.</p>
 
     <!-- Help Topics Dropdown -->
-    <select id="helpTopics">
+    <select id="helpTopics" aria-label="Help topics">
       <option value="">-- Select a help topic --</option>
       <option value="login">Login & Security</option>
       <option value="payments">Payments & Refunds</option>
@@ -131,13 +133,12 @@
     <!-- Live Chat Section -->
     <div class="chat-box">
       <div class="chat-status">Online</div>
-      <a class="chat-button" href="#">Start Live Chat</a>
+      <a class="chat-button" href="#" onclick="openTidioChat(); return false;" aria-label="Start live chat">Start Live Chat</a>
     </div>
   </div>
 
   <footer>
     © 2025 PayPal Support Center
-  </a>
   </footer>
 
   <!-- Tidio live chat script -->
@@ -148,16 +149,25 @@
     const topicInfo = document.getElementById('topicInfo');
 
     const guidance = {
-      login: "If you can't log in, reset your password at paypal.com and check your 2FA devices or or you can start a live chat for quick resolution.",
+      login: "If you can't log in, reset your password at paypal.com and check your 2FA devices. You can also start a live chat for quick resolution.",
       payments: "Track payments in Activity. Refunds can be issued directly from the transaction details.",
-      disputes: "Open a case in the Resolution Center. Provide evidence and respond before deadlines or you can start a live chat for more help.",
-      limits: "Upload requested documents under Notifications to lift limits and release holds or you can start a live chat with our help team."
+      disputes: "Open a case in the Resolution Center. Provide evidence and respond before deadlines. You can also start a live chat for more help.",
+      limits: "Upload requested documents under Notifications to lift limits and release holds. You can also start a live chat with our help team."
     };
 
     helpTopics.addEventListener('change', () => {
       const val = helpTopics.value;
       topicInfo.textContent = val ? guidance[val] : "Please select a topic to see guidance.";
     });
+
+    // Function to open Tidio chat
+    function openTidioChat() {
+      if (window.tidioChatApi) {
+        window.tidioChatApi.open();
+      } else {
+        alert("Chat is still loading, please try again in a moment.");
+      }
+    }
   </script>
 </body>
 </html>
